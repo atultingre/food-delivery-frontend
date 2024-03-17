@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import "./Navbar.scss";
 import { assets } from "../../assets/assets";
 import { useStore } from "../../context/StoreContext";
-import Login from "../LoginPopup/Login";
+// import Login from "../LoginPopup/Login";
+import { useAuth } from "../../context/AuthContext";
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
 
   const { getTotalCartAmount } = useStore();
+  const { isLoggedIn, handleLogout } = useAuth();
 
   return (
     <div className="navbar">
@@ -29,13 +31,13 @@ const Navbar = ({ setShowLogin }) => {
         >
           menu
         </a>
-        <a
+        {/* <a
           href="#app-download"
           onClick={() => setMenu("mobile-app")}
           className={menu === "mobile-app" ? "active" : ""}
         >
           mobile-app
-        </a>
+        </a> */}
         <a
           href="#footer"
           onClick={() => setMenu("contact-us")}
@@ -52,8 +54,14 @@ const Navbar = ({ setShowLogin }) => {
           </Link>
           <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
-        {/* <button onClick={() => setShowLogin(true)}>Sign in</button> */}
-        <Login />
+        {isLoggedIn ? (
+          <div>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        ) : (
+          <button onClick={() => setShowLogin(true)}>Sign in</button>
+        )}
+        {/* <Login /> */}
       </div>
     </div>
   );

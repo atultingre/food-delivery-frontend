@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./LoginPopup.scss";
 import { assets } from "../../assets/assets";
-import { GoogleLogin } from "@react-oauth/google";
+import Login from "./Login";
 
 const LoginPopup = ({ setShowLogin }) => {
   const [currState, setCurrState] = useState("Sign Up");
@@ -90,6 +90,7 @@ const LoginPopup = ({ setShowLogin }) => {
         <button type="submit">
           {currState === "Sign Up" ? "Create account" : "Login"}
         </button>
+        <Login setShowLogin={setShowLogin} />
         <div className="login-popup-navigation">
           {currState === "Login" ? (
             <p>
@@ -103,7 +104,6 @@ const LoginPopup = ({ setShowLogin }) => {
             </p>
           )}
         </div>
-        
       </form>
     </div>
   );
