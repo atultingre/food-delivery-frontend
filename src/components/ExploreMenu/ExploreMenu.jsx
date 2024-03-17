@@ -3,7 +3,7 @@ import { menu_list } from "../../assets/assets";
 const ExploreMenu = ({ category, setCategory }) => {
   return (
     <div className="explore-menu" id="explore-menu">
-      <h1>Explore our mneu</h1>
+      <h1>Explore our menu</h1>
       <p className="explore-menu-text">
         Choose form a diverse manu featuring a delectable arrray of dishes. Our
         mission is to satisfy your carving and elevate your dining experience,

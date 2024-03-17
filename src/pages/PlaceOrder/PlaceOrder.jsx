@@ -2,8 +2,8 @@ import { useStore } from "../../context/StoreContext";
 import "./PlaceOrder.scss";
 
 const PlaceOrder = () => {
-  const { getTotalCartAmount } = useStore();
-  const deliveryCost = 80;
+  const { deliveryCost, getTotalCartAmount } = useStore();
+
   return (
     <form className="place-order">
       <div className="place-order-left">

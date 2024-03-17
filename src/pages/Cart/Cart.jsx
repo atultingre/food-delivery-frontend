@@ -3,10 +3,9 @@ import "./Cart.scss";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cartItems, food_list, removeFormCart, getTotalCartAmount } =
+  const { deliveryCost, cartItems, food_list, removeFormCart, getTotalCartAmount } =
     useStore();
   const navigate = useNavigate();
-  const deliveryCost = 80;
   return (
     <div className="cart">
       <div className="cart-items">

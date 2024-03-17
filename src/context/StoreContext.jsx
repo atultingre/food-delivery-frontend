@@ -8,6 +8,7 @@ const StoreContextProvider = ({ children }) => {
     const storedCartItems = localStorage.getItem("cartItems");
     return storedCartItems ? JSON.parse(storedCartItems) : {};
   });
+  const deliveryCost = 60;
 
   useEffect(() => {
     // Update localStorage whenever cartItems change
@@ -61,6 +62,7 @@ const StoreContextProvider = ({ children }) => {
     addToCart,
     removeFormCart,
     getTotalCartAmount,
+    deliveryCost,
   };
 
   return (
