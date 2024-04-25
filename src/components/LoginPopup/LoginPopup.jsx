@@ -1,36 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./LoginPopup.scss";
 import { assets } from "../../assets/assets";
 import Login from "./Login";
+import { useStore } from "../../context/StoreContext";
+import axios from "axios";
 
 const LoginPopup = ({ setShowLogin }) => {
-  const [currState, setCurrState] = useState("Sign Up");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const { url, setToken } = useStore();
+  const [currState, setCurrState] = useState("Login");
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Here you can add logic for submitting the form
+  const onChangeHandler = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setData({ ...data, [name]: value });
+  };
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  const onLogin = async (e) => {
+    e.preventDefault();
+    let newUrl = url;
+
     if (currState === "Login") {
-      // Handle login
-      console.log("Logging in with email:", email, "and password:", password);
+      newUrl += "/api/user/login";
     } else {
-      // Handle sign up
-      console.log(
-        "Signing up with name:",
-        name,
-        "email:",
-        email,
-        "and password:",
-        password
-      );
+      newUrl += "/api/user/register";
+    }
+
+    const response = await axios.post(newUrl, data);
+
+    if (response.data.success) {
+      setToken(response.data.token);
+      localStorage.setItem("token", response.data.token);
+      setShowLogin(false);
+    } else {
+      alert(response.data.message);
     }
   };
 
   return (
     <div className="login-popup">
-      <form className="login-popup-container" onSubmit={handleSubmit}>
+      <form className="login-popup-container" onSubmit={onLogin}>
         <div className="login-popup-title">
           <h2>{currState}</h2>
           <img
@@ -45,15 +63,17 @@ const LoginPopup = ({ setShowLogin }) => {
               <input
                 type="email"
                 placeholder="Your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={data.email}
+                name="email"
+                onChange={onChangeHandler}
                 required
               />
               <input
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={data.password}
+                onChange={onChangeHandler}
                 required
               />
             </>
@@ -62,22 +82,25 @@ const LoginPopup = ({ setShowLogin }) => {
               <input
                 type="text"
                 placeholder="Your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={data.name}
+                name="name"
+                onChange={onChangeHandler}
                 required
               />
               <input
                 type="email"
                 placeholder="Your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={data.email}
+                name="email"
+                onChange={onChangeHandler}
                 required
               />
               <input
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={data.password}
+                name="password"
+                onChange={onChangeHandler}
                 required
               />
             </>
@@ -90,7 +113,7 @@ const LoginPopup = ({ setShowLogin }) => {
         <button type="submit">
           {currState === "Sign Up" ? "Create account" : "Login"}
         </button>
-        <Login setShowLogin={setShowLogin} />
+        {/* <Login setShowLogin={setShowLogin} /> */}
         <div className="login-popup-navigation">
           {currState === "Login" ? (
             <p>

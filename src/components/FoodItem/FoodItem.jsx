@@ -5,12 +5,16 @@ import { useStore } from "../../context/StoreContext";
 
 const FoodItem = ({ item }) => {
   const { _id: id, name, price, description, image } = item;
-  const { cartItems, addToCart, removeFormCart } = useStore();
+  const { cartItems, addToCart, removeFormCart, url } = useStore();
 
   return (
     <div className="food-item">
       <div className="food-item-img-container">
-        <img src={image} className="food-item-image" alt={name} />
+        <img
+          src={url + "/images/" + image}
+          className="food-item-image"
+          alt={name}
+        />
         {!cartItems[id] ? (
           <img
             className="add"

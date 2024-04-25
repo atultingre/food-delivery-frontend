@@ -3,8 +3,14 @@ import "./Cart.scss";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { deliveryCost, cartItems, food_list, removeFormCart, getTotalCartAmount } =
-    useStore();
+  const {
+    deliveryCost,
+    cartItems,
+    food_list,
+    removeFormCart,
+    getTotalCartAmount,
+    url,
+  } = useStore();
   const navigate = useNavigate();
   return (
     <div className="cart">
@@ -26,7 +32,10 @@ const Cart = () => {
                 return (
                   <div key={index}>
                     <div className="cart-items-title cart-items-item">
-                      <img src={item.image} alt={item.name} />
+                      <img
+                        src={url + "/images/" + item.image}
+                        alt={item.name}
+                      />
                       <p>{item.name}</p>
                       <p> {item.price} &#8377;</p>
                       <p>{cartItems[item._id]}</p>
