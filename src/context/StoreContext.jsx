@@ -28,39 +28,64 @@ const StoreContextProvider = ({ children }) => {
     }
   };
 
+  const loadCartData = async (token) => {
+    const response = await axios.post(
+      url + "/api/cart/get",
+      {},
+      { headers: { token } }
+    );
+    setCartItems(response.data.cartData);
+  };
+
   useEffect(() => {
     async function loadData() {
       await fetchFoodList();
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token"));
+        await loadCartData(localStorage.getItem("token"))
       }
     }
     loadData();
   }, []);
 
-  const addToCart = (itemId) => {
+  const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
       setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
     } else {
       setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     }
+    if (token) {
+      await axios.post(
+        `${url}/api/cart/add`,
+        { itemId },
+        { headers: { token } }
+      );
+    }
   };
 
-  const removeFormCart = (itemId) => {
-    // setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-    if (cartItems[itemId]) {
-      // Decrease the quantity of the item
-      setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+  const removeFormCart = async (itemId) => {
+    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+    // if (cartItems[itemId]) {
+    //   // Decrease the quantity of the item
+    //   setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
 
-      // Remove the item from the cart if the quantity becomes 0
-      if (cartItems[itemId] === 1) {
-        const updatedCartItems = { ...cartItems };
-        delete updatedCartItems[itemId];
-        setCartItems(updatedCartItems);
-      }
+    //   // Remove the item from the cart if the quantity becomes 0
+    //   if (cartItems[itemId] === 1) {
+    //     const updatedCartItems = { ...cartItems };
+    //     delete updatedCartItems[itemId];
+    //     setCartItems(updatedCartItems);
+    //   }
 
-      // Update localStorage
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    //   // Update localStorage
+    //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    // }
+
+    if (token) {
+      await axios.post(
+        `${url}/api/cart/remove`,
+        { itemId },
+        { headers: { token } }
+      );
     }
   };
 
