@@ -13,7 +13,7 @@ const StoreContextProvider = ({ children }) => {
   const [food_list, setFoodList] = useState([]);
 
   const url = "http://localhost:5000";
-  const deliveryCost = 60;
+  const deliveryCost = 1;
 
   useEffect(() => {
     // Update localStorage whenever cartItems change
@@ -22,7 +22,6 @@ const StoreContextProvider = ({ children }) => {
 
   const fetchFoodList = async () => {
     const response = await axios.get(`${url}/api/food/list`);
-    console.log("response: ", response.data.data);
     if (response.data.success) {
       setFoodList(response.data.data);
     }
@@ -30,7 +29,7 @@ const StoreContextProvider = ({ children }) => {
 
   const loadCartData = async (token) => {
     const response = await axios.post(
-      url + "/api/cart/get",
+      `${url}/api/cart/get`,
       {},
       { headers: { token } }
     );
@@ -42,7 +41,7 @@ const StoreContextProvider = ({ children }) => {
       await fetchFoodList();
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token"));
-        await loadCartData(localStorage.getItem("token"))
+        await loadCartData(localStorage.getItem("token"));
       }
     }
     loadData();
@@ -100,8 +99,6 @@ const StoreContextProvider = ({ children }) => {
     }
     return totalAmount;
   };
-
-  console.log("getTotalCartAmount: ", getTotalCartAmount());
 
   const contextValue = {
     food_list,

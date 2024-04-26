@@ -6,7 +6,6 @@ import LoginPopup from "./components/LoginPopup/LoginPopup";
 
 const App = () => {
   const { showLogin, setShowLogin } = useAuth();
-  console.log("showLogin: ", showLogin);
   return (
     <>
       {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : ""}
