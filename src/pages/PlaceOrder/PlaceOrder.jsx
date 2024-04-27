@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "../../context/StoreContext";
 import "./PlaceOrder.scss";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
   const { deliveryCost, getTotalCartAmount, token, food_list, cartItems, url } =
     useStore();
-
+  const navigate = useNavigate();
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -38,7 +39,7 @@ const PlaceOrder = () => {
       }
     });
     let orderData = {
-      address: JSON.stringify(data),
+      address: data,
       items: orderItems,
 
       amount: getTotalCartAmount() + deliveryCost,
@@ -53,6 +54,14 @@ const PlaceOrder = () => {
       alert("Error");
     }
   };
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/cart");
+    } else if (getTotalCartAmount() === 0) {
+      navigate("/cart");
+    }
+  }, [token]);
 
   return (
     <form className="place-order" onSubmit={placeOrder}>

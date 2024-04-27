@@ -6,6 +6,7 @@ import PlaceOrder from "../pages/PlaceOrder/PlaceOrder";
 import LoginPopup from "../components/LoginPopup/LoginPopup";
 import NotFound from "../components/NotFound/NotFound.jsx";
 import Verify from "../pages/Verify/Verify.jsx";
+import MyOrders from "../pages/MyOrders/MyOrders.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { path: "/order", element: <PlaceOrder /> },
       { path: "/login", element: <LoginPopup /> },
       { path: "/verify", element: <Verify /> },
+      { path: "/myorders", element: <MyOrders /> },
       { path: "*", element: <NotFound /> },
     ],
   },
